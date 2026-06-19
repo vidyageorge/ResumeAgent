@@ -1,0 +1,155 @@
+*,
+*::before,
+*::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0f1117;
+  --sidebar: #161b22;
+  --surface: #1c2128;
+  --border: #30363d;
+  --text: #e6edf3;
+  --muted: #8b949e;
+  --primary: #3b82f6;
+  --primary-hover: #2563eb;
+  --assistant: #1c2333;
+  --user: #1e3a5f;
+  --success: #3fb950;
+  --radius: 10px;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  height: 100vh;
+  overflow: hidden;
+}
+
+.app { display: flex; height: 100vh; }
+
+.sidebar {
+  width: 240px;
+  background: var(--sidebar);
+  border-right: 1px solid var(--border);
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.brand h1 { font-size: 1.1rem; font-weight: 700; }
+.brand p { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+
+.agent-nav { display: flex; flex-direction: column; gap: 6px; }
+
+.agent-btn, .secondary-btn {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--text);
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.agent-btn:hover, .secondary-btn:hover { background: var(--surface); }
+.agent-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-top: auto;
+}
+
+.dot { width: 8px; height: 8px; border-radius: 50%; background: #484f58; }
+.dot.ok { background: var(--success); }
+
+.main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+
+.chat {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.msg { display: flex; }
+.msg.user { justify-content: flex-end; }
+
+.bubble {
+  max-width: 75%;
+  padding: 14px 18px;
+  border-radius: var(--radius);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.msg.assistant .bubble { background: var(--assistant); border: 1px solid var(--border); }
+.msg.user .bubble { background: var(--user); border: 1px solid #2d4a6f; }
+
+.bubble ul { margin: 8px 0 0 20px; }
+.bubble p { margin: 6px 0; }
+
+.agent-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  color: var(--muted);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.input-bar {
+  display: flex;
+  gap: 10px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+  background: var(--sidebar);
+}
+
+#messageInput {
+  flex: 1;
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.92rem;
+  resize: none;
+  outline: none;
+}
+
+#messageInput:focus { border-color: var(--primary); }
+
+#sendBtn {
+  padding: 12px 24px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+#sendBtn:hover { background: var(--primary-hover); }
+#sendBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.typing .bubble::after { content: "..."; animation: blink 1.2s infinite; }
+@keyframes blink { 0%,100%{content:"."} 33%{content:".."} 66%{content:"..."} }
+
+@media (max-width: 768px) {
+  .sidebar { width: 60px; padding: 12px 8px; }
+  .brand p, .agent-btn span { display: none; }
+  .bubble { max-width: 90%; }
+}

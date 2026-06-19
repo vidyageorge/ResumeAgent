@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vidya Copilot</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <h1>Vidya Copilot</h1>
+        <p>Local AI Assistant</p>
+      </div>
+      <nav class="agent-nav" id="agentNav">
+        <button class="agent-btn active" data-agent="">Auto</button>
+        <button class="agent-btn" data-agent="coding">Coding</button>
+        <button class="agent-btn" data-agent="interview">Interview</button>
+        <button class="agent-btn" data-agent="learning">Learning</button>
+        <button class="agent-btn" data-agent="career">Career</button>
+        <button class="agent-btn" data-agent="productivity">Productivity</button>
+      </nav>
+      <div class="status" id="statusPanel">
+        <span class="dot" id="statusDot"></span>
+        <span id="statusText">Connecting...</span>
+      </div>
+      <div class="actions">
+        <button id="indexBtn" class="secondary-btn">Index Workspace</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="chat" id="chatContainer">
+        <div class="msg assistant">
+          <div class="bubble">
+            <strong>Welcome to Vidya Copilot</strong>
+            <p>Your personal local AI assistant — no Cursor subscription needed.</p>
+            <p>Try:</p>
+            <ul>
+              <li>Create a Selenium Python framework with Pytest, POM, Allure</li>
+              <li>Where is LoginPage used?</li>
+              <li>Start a Playwright interview</li>
+              <li>Explain RAG and embeddings</li>
+              <li>Review my resume for QA roles</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <form class="input-bar" id="chatForm">
+        <textarea id="messageInput" rows="2" placeholder="Ask Vidya Copilot anything..." autofocus></textarea>
+        <button type="submit" id="sendBtn">Send</button>
+      </form>
+    </main>
+  </div>
+  <script src="/static/app.js"></script>
+</body>
+</html>

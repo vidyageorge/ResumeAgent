@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Naukri Job Agent</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <h1>Naukri Job Agent</h1>
+      <p class="subtitle">Chat with your agent to search and apply to jobs on Naukri</p>
+      <div class="status-bar" id="statusBar">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="statusText">Connecting...</span>
+      </div>
+    </header>
+
+    <main class="chat-container" id="chatContainer">
+      <div class="message assistant">
+        <div class="bubble">
+          Hi! I'm your Naukri job application agent. Try saying:
+          <ul>
+            <li><strong>start</strong> — open the browser</li>
+            <li><strong>login</strong> — sign in to Naukri</li>
+            <li><strong>search python jobs in Bangalore</strong></li>
+            <li><strong>apply to 5 react developer jobs in Pune</strong></li>
+          </ul>
+        </div>
+      </div>
+    </main>
+
+    <footer class="input-area">
+      <form id="chatForm">
+        <textarea
+          id="messageInput"
+          placeholder="Type your command... e.g. search data engineer jobs in Mumbai"
+          rows="2"
+          autofocus
+        ></textarea>
+        <button type="submit" id="sendBtn">Send</button>
+      </form>
+    </footer>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

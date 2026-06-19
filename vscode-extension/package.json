@@ -1,0 +1,52 @@
+{
+  "name": "vidya-copilot",
+  "displayName": "Vidya Copilot",
+  "description": "Personal local AI assistant — connect to Vidya Copilot server",
+  "version": "0.1.0",
+  "publisher": "vidya",
+  "engines": { "vscode": "^1.85.0" },
+  "categories": ["Other", "Machine Learning"],
+  "activationEvents": ["onStartupFinished"],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      { "command": "vidyaCopilot.openChat", "title": "Vidya Copilot: Open Chat" },
+      { "command": "vidyaCopilot.askSelection", "title": "Vidya Copilot: Ask About Selection" },
+      { "command": "vidyaCopilot.indexProject", "title": "Vidya Copilot: Index Project" },
+      { "command": "vidyaCopilot.reviewFile", "title": "Vidya Copilot: Review Current File" }
+    ],
+    "keybindings": [
+      { "command": "vidyaCopilot.openChat", "key": "ctrl+shift+v", "mac": "cmd+shift+v" }
+    ],
+    "configuration": {
+      "title": "Vidya Copilot",
+      "properties": {
+        "vidyaCopilot.serverUrl": {
+          "type": "string",
+          "default": "http://127.0.0.1:8000",
+          "description": "Vidya Copilot server URL"
+        },
+        "vidyaCopilot.apiKey": {
+          "type": "string",
+          "default": "dev-local-key",
+          "description": "API key for Vidya Copilot server"
+        },
+        "vidyaCopilot.defaultAgent": {
+          "type": "string",
+          "default": "coding",
+          "enum": ["coding", "interview", "learning", "career", "productivity", "general"],
+          "description": "Default agent type"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.3.0"
+  }
+}
