@@ -27,10 +27,22 @@ class OllamaClient:
             "stream": False,
             "options": {"temperature": temperature},
         }
-        async with httpx.AsyncClient(timeout=180.0) as client:
-            response = await client.post(f"{self.base_url}/api/chat", json=payload)
-            response.raise_for_status()
-            return response.json()["message"]["content"]
+        try:
+            async with httpx.AsyncClient(timeout=180.0) as client:
+                response = await client.post(f"{self.base_url}/api/chat", json=payload)
+                response.raise_for_status()
+                return response.json()["message"]["content"]
+        except httpx.ConnectError:
+            raise ConnectionError(
+                "Cannot connect to Ollama at "
+                f"{self.base_url}. Start the Ollama app and run: ollama pull {self.model}"
+            ) from None
+        except httpx.HTTPStatusError as exc:
+            if exc.response.status_code == 404:
+                raise ConnectionError(
+                    f"Model '{self.model}' not found. Run: ollama pull {self.model}"
+                ) from None
+            raise
 
     async def run_with_tools(
         self,

@@ -94,8 +94,20 @@ async def websocket_chat(websocket: WebSocket):
             if not message:
                 await websocket.send_json({"reply": "Please send a message."})
                 continue
-            result = await orchestrator.chat(message, session_id, agent)
-            await websocket.send_json(result)
+            try:
+                result = await orchestrator.chat(message, session_id, agent)
+                await websocket.send_json(result)
+            except Exception as exc:
+                await websocket.send_json({
+                    "reply": (
+                        f"**Error:** {exc}\n\n"
+                        "**Fix:** Start Ollama, then run:\n"
+                        "```\nollama pull qwen3:8b\n```\n"
+                        "Keep the Ollama app running and try again."
+                    ),
+                    "session_id": session_id or "",
+                    "agent": agent or "general",
+                })
     except WebSocketDisconnect:
         pass
 

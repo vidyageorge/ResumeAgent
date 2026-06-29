@@ -11,6 +11,8 @@ let sessionId = localStorage.getItem("vidya_session") || null;
 let selectedAgent = "";
 let ws = null;
 let connected = false;
+let responseTimer = null;
+const RESPONSE_TIMEOUT_MS = 180000;
 
 const API_KEY = localStorage.getItem("vidya_api_key") || "dev-local-key";
 
@@ -31,7 +33,14 @@ function connectWs() {
     setTimeout(connectWs, 3000);
   };
 
+  ws.onerror = () => {
+    removeTyping();
+    setLoading(false);
+    appendMessage("assistant", "Connection error. Check that `python run.py` is running.");
+  };
+
   ws.onmessage = (e) => {
+    clearResponseTimer();
     const data = JSON.parse(e.data);
     removeTyping();
     if (data.session_id) {
@@ -109,6 +118,25 @@ function removeTyping() {
   document.getElementById("typing")?.remove();
 }
 
+function clearResponseTimer() {
+  if (responseTimer) {
+    clearTimeout(responseTimer);
+    responseTimer = null;
+  }
+}
+
+function startResponseTimer() {
+  clearResponseTimer();
+  responseTimer = setTimeout(() => {
+    removeTyping();
+    setLoading(false);
+    appendMessage(
+      "assistant",
+      "Request timed out. Is Ollama running? Open the Ollama app and run:\n\nollama pull qwen3:8b"
+    );
+  }, RESPONSE_TIMEOUT_MS);
+}
+
 function setLoading(on) {
   sendBtn.disabled = on;
   messageInput.disabled = on;
@@ -135,6 +163,7 @@ async function sendMessage(message) {
       const payload = { message, session_id: sessionId };
       if (selectedAgent) payload.agent = selectedAgent;
       ws.send(JSON.stringify(payload));
+      startResponseTimer();
     } else {
       const data = await sendHttp(message);
       removeTyping();
@@ -172,7 +201,16 @@ connectWs();
 fetch("/health").then((r) => r.json()).then((d) => {
   if (d.ollama?.model_available) {
     statusText.textContent = `Connected · ${d.ollama.configured_model}`;
+    statusDot.classList.add("ok");
   } else if (d.ollama?.status === "error") {
-    statusText.textContent = "Ollama offline — start Ollama first";
+    statusDot.classList.remove("ok");
+    statusText.textContent = "Ollama offline — start Ollama app";
+    appendMessage(
+      "assistant",
+      "**Ollama is not running.**\n\n1. Install from https://ollama.com\n2. Open the Ollama app\n3. Run: `ollama pull qwen3:8b`\n4. Refresh this page and try again."
+    );
+  } else if (d.ollama && !d.ollama.model_available) {
+    statusDot.classList.remove("ok");
+    statusText.textContent = `Model missing — ollama pull ${d.ollama.configured_model}`;
   }
 }).catch(() => {});

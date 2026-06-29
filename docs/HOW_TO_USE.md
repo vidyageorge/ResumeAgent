@@ -9,13 +9,25 @@ Vidya Copilot is your **personal local AI assistant** — a Cursor alternative t
 ### Step 1: Install Ollama (the local AI brain)
 
 1. Download from [https://ollama.com](https://ollama.com)
-2. Install and open it
+2. Install and **open the Ollama app** (keep it running in the background)
 3. In PowerShell, pull the models:
 
 ```powershell
 ollama pull qwen3:8b
 ollama pull nomic-embed-text
 ```
+
+**Windows: `ollama` command not found?** The app is installed but CLI may not be on PATH. Use the full path:
+
+```powershell
+& "$env:LOCALAPPDATA\Programs\Ollama\ollama.exe" pull qwen3:8b
+& "$env:LOCALAPPDATA\Programs\Ollama\ollama.exe" list
+```
+
+To fix permanently, add this folder to your PATH:
+`C:\Users\<YourUsername>\AppData\Local\Programs\Ollama`
+
+Or restart PowerShell / your PC after installing Ollama — the installer usually adds PATH on reboot.
 
 Keep Ollama running in the background while you use Vidya Copilot.
 
